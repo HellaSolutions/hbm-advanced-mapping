@@ -1,4 +1,4 @@
-package it.hella.model.hibernate.tbsc;
+package it.hella.hibernate.model.tbsc;
 
 import java.util.Date;
 

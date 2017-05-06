@@ -1,4 +1,4 @@
-package it.hella.model.hibernate.tbsc;
+package it.hella.hibernate.model.tbsc;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
