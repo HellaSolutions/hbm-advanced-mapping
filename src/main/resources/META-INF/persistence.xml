@@ -4,6 +4,7 @@
              http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
 	version="2.1">
 	<persistence-unit name="ecommerce">
+		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 		<non-jta-data-source>java:jboss/datasources/mysqlDS</non-jta-data-source>
 		<properties>
 			<property name="hibernate.archive.autodetection" value="class, hbm" />
@@ -15,6 +16,29 @@
 			<property name="hibernate.connection.autocommit" value="true" />
 			<property name="hibernate.cache.use_second_level_cache" value="true" />
 			<property name="hibernate.cache.region.factory_class" value="org.hibernate.cache.ehcache.EhCacheRegionFactory" />
+		</properties>
+	</persistence-unit>
+	<persistence-unit name="ecommerceTest" transaction-type="RESOURCE_LOCAL">
+		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+		<properties>
+			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
+			<property name="hibernate.connection.url"
+				value="jdbc:mysql://localhost:3306/hibernate_mapping?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC" />
+			<property name="hibernate.connection.username" value="root" />
+			<property name="hibernate.connection.password" value="root" />
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
+			<property name="hibernate.connection.isolation" value="4" />
+			<property name="hibernate.connection.autocommit" value="true" />
+			<property name="hibernate.cache.use_second_level_cache"
+				value="true" />
+			<property name="hibernate.cache.region.factory_class"
+				value="org.hibernate.cache.ehcache.EhCacheRegionFactory" />
+			<property name="hibernate.current_session_context_class"
+				value="thread" />
+			<property name="hibernate.archive.autodetection" value="class, hbm" />
+			<property name="hibernate.hbm2ddl.auto" value="create" />
+			<property name="hibernate.show_sql" value="false" />
+			<property name="hibernate.format_sql" value="false" />
 		</properties>
 	</persistence-unit>
 </persistence>
