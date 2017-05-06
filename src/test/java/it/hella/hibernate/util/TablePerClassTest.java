@@ -8,9 +8,9 @@ import java.util.List;
 
 import org.junit.Test;
 
-import it.hella.model.tbsc.BankAccountC;
-import it.hella.model.tbsc.BillingDetailsC;
-import it.hella.model.tbsc.CreditCardC;
+import it.hella.model.hibernate.tbsc.BankAccountC;
+import it.hella.model.hibernate.tbsc.BillingDetailsC;
+import it.hella.model.hibernate.tbsc.CreditCardC;
 
 public class TablePerClassTest extends BaseTests {
 
