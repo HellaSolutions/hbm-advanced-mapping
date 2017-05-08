@@ -1,18 +1,22 @@
 package it.hella.hibernate.model.component;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.EnumMap;
+import java.util.Map;
+import java.util.Optional;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.MapKeyColumn;
+import javax.persistence.MapKeyEnumerated;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -20,6 +24,7 @@ import org.hibernate.annotations.Parameter;
 
 import it.hella.hibernate.embeddable.Address;
 import it.hella.hibernate.embeddable.PhoneNumber;
+import it.hella.hibernate.embeddable.PhoneNumber.PHONETYPE;
 
 /**
  * The Class User.
@@ -41,19 +46,38 @@ import it.hella.hibernate.embeddable.PhoneNumber;
  * 
  * <p>
  * An @Embeddable type is also used to save a composition of PhoneNumbers using
- * the @ElementCollection annotation
- * </p>
+ * the @ElementCollection annotation and a Map with an enumerated key, namely
+ * the PHONETYPE {MOBILE, HOME .., via the @MapKeyEnumerated annotation.<br/>
+ * The other type of MapKey annotations are
+ * <ul>
+ * <li>
  * 
- * @see Address
- * @see PhoneNumber
+ * @MapKeyEnumerated: enumerate key</li>
+ *                    <li>
+ * @MapKeyTemporal: if the Date key type</li>
+ *                  <li>
+ * @MapKeyJoinColumn/@MapKeyJoinColumns: if the map key type is another entity
+ *                                       (not relevant for these case histories)
+ *                                       </li>
+ *                                       </ul>
+ * 
+ *                                       <b>@MapKeyColumn</b> if the map key is
+ *                                       a basic type. If you don't specify the
+ *                                       column name, the name of the property
+ *                                       followed by underscore followed by KEY
+ *                                       is used (for example orders_KEY),<br/>
+ *                                       <b>@AttributeOverride/@AttributeOverrides</b>
+ *                                       when the map key is a embeddable
+ *                                       object. Use key. as a prefix for your
+ *                                       embeddable object property names.
+ *                                       </p>
  * 
  */
 @Entity
-@Table(name = "USER")
-public class User implements Serializable {
+@Table(name = "USER_WITH_PHONEMAP")
+public class UserWithPhoneMap implements Serializable {
 
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = 3210499507098802307L;
+	private static final long serialVersionUID = -4335609167513090347L;
 
 	/** The Id. */
 	@Id
@@ -81,15 +105,11 @@ public class User implements Serializable {
 	@Embedded
 	private Address homeAddress;
 
-	/**
-	 * The phones.
-	 * 
-	 * Embedded Collection
-	 * 
-	 */
 	@ElementCollection
-	@CollectionTable(name = "USER_PHONE", joinColumns = @JoinColumn(name = "USER_ID"))
-	private Set<PhoneNumber> phones = new HashSet<>();
+	@CollectionTable(name = "USER_PHONE_MAP", joinColumns = @JoinColumn(name = "USER_ID"))
+	@MapKeyEnumerated(EnumType.STRING)
+	@MapKeyColumn(name = "PHONE_TYPE")
+	private Map<PHONETYPE, PhoneNumber> phonesMap = new EnumMap<>(PHONETYPE.class);
 
 	/**
 	 * Gets the id.
@@ -168,43 +188,26 @@ public class User implements Serializable {
 		this.homeAddress = homeAddress;
 	}
 
-	/**
-	 * Gets the phones.
-	 *
-	 * @return the phones
-	 */
-	public Set<PhoneNumber> getPhones() {
-		return phones;
-	}
-
-	/**
-	 * Sets the phones.
-	 *
-	 * @param phones
-	 *            the new phones
-	 */
 	@SuppressWarnings("unused")
-	private void setPhones(Set<PhoneNumber> phones) {
-		this.phones = phones;
+	private Map<PHONETYPE, PhoneNumber> getPhonesMap() {
+		return phonesMap;
 	}
 
-	/**
-	 * Adds the phone.
-	 *
-	 * @param phone
-	 *            the phone
-	 */
-	public void addPhone(PhoneNumber phone) {
-		phones.add(phone);
+	@SuppressWarnings("unused")
+	private void setPhonesMap(Map<PHONETYPE, PhoneNumber> phonesMap) {
+		this.phonesMap = phonesMap;
 	}
 
-	/**
-	 * Removes the phone.
-	 *
-	 * @param phone
-	 *            the phone
-	 */
-	public void removePhone(PhoneNumber phone) {
-		phones.remove(phone);
+	public Optional<PhoneNumber> getPhone(PHONETYPE phoneType) {
+		return Optional.ofNullable(phonesMap.getOrDefault(phoneType, (PhoneNumber) null));
 	}
+
+	public void savePhone(PHONETYPE phoneType, PhoneNumber phoneNumber) {
+		phonesMap.put(phoneType, phoneNumber);
+	}
+
+	public void removePhone(PHONETYPE phoneType) {
+		phonesMap.remove(phoneType);
+	}
+
 }
