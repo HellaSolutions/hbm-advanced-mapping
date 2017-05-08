@@ -50,27 +50,13 @@ import it.hella.hibernate.embeddable.PhoneNumber.PHONETYPE;
  * the PHONETYPE {MOBILE, HOME .., via the @MapKeyEnumerated annotation.<br/>
  * The other type of MapKey annotations are
  * <ul>
- * <li>
- * 
- * @MapKeyEnumerated: enumerate key</li>
- *                    <li>
- * @MapKeyTemporal: if the Date key type</li>
- *                  <li>
- * @MapKeyJoinColumn/@MapKeyJoinColumns: if the map key type is another entity
- *                                       (not relevant for these case histories)
- *                                       </li>
- *                                       </ul>
- * 
- *                                       <b>@MapKeyColumn</b> if the map key is
- *                                       a basic type. If you don't specify the
- *                                       column name, the name of the property
- *                                       followed by underscore followed by KEY
- *                                       is used (for example orders_KEY),<br/>
- *                                       <b>@AttributeOverride/@AttributeOverrides</b>
- *                                       when the map key is a embeddable
- *                                       object. Use key. as a prefix for your
- *                                       embeddable object property names.
- *                                       </p>
+ * <li>@MapKey; primary key or a persistent field or property of the entity that
+ * is the value of the map</li>
+ * <li>@MapKeyEnumerated: enumerated key</li>
+ * <li>@MapKeyTemporal: if the key type is a Date</li>
+ * <li>@MapKeyJoinColumn/@MapKeyJoinColumns: if the map key type is another
+ * entity (not relevant for these case histories)</li>
+ * </ul>
  * 
  */
 @Entity
