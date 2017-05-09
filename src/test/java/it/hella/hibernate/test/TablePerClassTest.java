@@ -1,4 +1,4 @@
-package it.hella.hibernate.util;
+package it.hella.hibernate.test;
 
 import static org.junit.Assert.assertTrue;
 
@@ -8,22 +8,22 @@ import java.util.List;
 
 import org.junit.Test;
 
-import it.hella.hibernate.model.tbch.BankAccountH;
-import it.hella.hibernate.model.tbch.BillingDetailsH;
-import it.hella.hibernate.model.tbch.CreditCardH;
+import it.hella.hibernate.model.tbsc.BankAccountC;
+import it.hella.hibernate.model.tbsc.BillingDetailsC;
+import it.hella.hibernate.model.tbsc.CreditCardC;
 
-public class SingleTablePerClassHierarchyTests extends BaseTests {
+public class TablePerClassTest extends BaseTests {
 
 	@Test
 	public void billingDetailsTest() {
 
-		CreditCardH cc = new CreditCardH();
+		CreditCardC cc = new CreditCardC();
 		cc.setNumber("1");
 		cc.setOwner("owner_cc");
 		cc.setType("type");
 		LocalDate expires = LocalDate.now().plusDays(366);
 		cc.setExpirationDate(Date.valueOf(expires));
-		BankAccountH ba = new BankAccountH();
+		BankAccountC ba = new BankAccountC();
 		ba.setAgency(5);
 		ba.setBank("UBI");
 		ba.setNumber("2");
@@ -31,21 +31,21 @@ public class SingleTablePerClassHierarchyTests extends BaseTests {
 		persistBilllingDetails(cc);
 		persistBilllingDetails(ba);
 
-		List<BillingDetailsH> res = entityManager
-				.createQuery("select c from CreditCardH c where c.owner = 'owner_cc'", BillingDetailsH.class)
+		List<BillingDetailsC> res = entityManager
+				.createQuery("select c from CreditCardC c where c.owner = 'owner_cc'", BillingDetailsC.class)
 				.getResultList();
 		assertTrue(res.size() == 1);
 		res = entityManager
-				.createQuery("select b from BankAccountH b where b.owner = 'owner_ba'", BillingDetailsH.class)
+				.createQuery("select b from BankAccountC b where b.owner = 'owner_ba'", BillingDetailsC.class)
 				.getResultList();
 		assertTrue(res.size() == 1);
 		// Polymorphic query
-		res = entityManager.createQuery("select b from BillingDetailsH b", BillingDetailsH.class).getResultList();
+		res = entityManager.createQuery("select b from BillingDetailsC b", BillingDetailsC.class).getResultList();
 		assertTrue(res.size() == 2);
 
 	}
 
-	private void persistBilllingDetails(BillingDetailsH bd) {
+	private void persistBilllingDetails(BillingDetailsC bd) {
 		entityManager.getTransaction().begin();
 		entityManager.persist(bd);
 		entityManager.getTransaction().commit();

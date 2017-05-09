@@ -1,4 +1,4 @@
-package it.hella.hibernate.util;
+package it.hella.hibernate.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
