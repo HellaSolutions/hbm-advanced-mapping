@@ -40,7 +40,7 @@ import it.hella.hibernate.embeddable.PhoneNumber.PHONETYPE;
  * 
  * <p>
  * In this case the @Embeddable class Address is embedded into User and
- * represents a projection of the column of the table USER that holds the
+ * represents a projection of the columns in the table USER that holds the
  * address information
  * </p>
  * 
@@ -48,7 +48,7 @@ import it.hella.hibernate.embeddable.PhoneNumber.PHONETYPE;
  * An @Embeddable type is also used to save a composition of PhoneNumbers using
  * the @ElementCollection annotation and a Map with an enumerated key, namely
  * the PHONETYPE {MOBILE, HOME .., via the @MapKeyEnumerated annotation.<br/>
- * The other type of MapKey annotations are
+ * The other type of MapKey annotations being
  * <ul>
  * <li>@MapKey; primary key or a persistent field or property of the entity that
  * is the value of the map</li>
